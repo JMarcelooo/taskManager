@@ -1,3 +1,135 @@
+const Task = require('../models/Task');
+
+exports.createTask = async (req, res) => {
+    const {title, description} = req.body;
+    const userId = req.userId;
+
+    try {
+
+        const newTask = new Task({
+            title,
+            description,
+            userId,
+        })
+
+        await newTask.save();
+
+        res.status(201).json({
+            message: 'Tarefa criada com sucesso!',
+            task: newTask,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Erro ao criar tarefa', error});
+    }
+};
+
+exports.getAllTasks = async (req, res) => {
+    const userId = req.userId;
+
+    try {
+        const taks = await Task.find({userId});
+
+        res.status(200).json({tasks});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Erro ao listar tarefas', })
+    }
+}
+
+exports.updateTask = async (req, res) => {
+    const { id } = req.params;
+    const { title, description, status} = req.body;
+    const userId = req.userId;
+
+    try{
+
+        const task = await Task.findOne({_id:id, userId});
+
+        if(!task) {
+            return res.status(404).json({message: 'Tarefa não encontrada ou não autorizada'})
+        }
+
+        task.title = title || task.title;
+        task.description = description || task.description;
+        task.status = status || task.status;
+
+        await task.save();
+
+        res.status(200).json({message: 'Tarefa atualizada com sucesso!', task})
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Erro ao atualizar tarefa', error})
+    }
+};
+
+exports.deleteTask = async (req, res) => {
+    const { id } = req.params;
+    const userId = req.userId;
+
+    try {
+
+        const task = await Task.findOneAndDelete({_id: id, userId});
+
+        if(!task) {
+            return res.status(404).json({message: 'Tarefa não encontrada'})
+        }
+
+        res.status(200).json({message: 'Tarefa deletada com sucesso!'})
+    } catch (error){
+        console.error(error);
+        res.status(500).json({message:'Erro ao deletar tarefa', error})
+    }
+}
+
+exports.markTaskAsDone = async (req, res) => {
+    const { id } = req.params;
+    const userId = req.userId;
+
+    try{
+
+        const task = await Task.findOne({_id: id, userId});
+
+        if (!task) {
+            return res.status(404).json({message:'Tarefa não encontrada'});
+        }
+
+        task.status = 'concluída';
+
+        await task.save();
+
+        res.status(200).json({message: 'Tarefa marcada como concluída', task});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Erro ao marcar tarefa como concluída', error})
+    }
+}
+
+exports.getTaskById = async (req, res) => {
+    const { id } = req.params;
+    const userId = req.userId;
+
+    try {
+        const task = await Task.findOne({_id: id, userId});
+
+        if (!task) {
+            return res.status(404).json({message: 'Tarefa não encontrada'})
+        }
+
+        res.status(200).json({ tasks });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Erro ao buscar tarefa', error});
+    }
+};
+
+
+
+
+
+
+
+/*
 const fs = require('fs');
 const path = require('path');
 
@@ -64,4 +196,4 @@ exports.deleteTask = (req, res) => {
     tasks = tasks.filter(t => t.id !== req.params.id);
     writeTasks(tasks);
     res.status(204).end();
-}
+}*/

@@ -1,13 +1,15 @@
+// routes/tasks.js
 const express = require('express');
 const router = express.Router();
-const taskController = require('../controllers/taskController');  // Verifique a importação
+const { authenticate } = require('../controllers/authController'); // Middleware de autenticação
+const taskController = require('../controllers/taskController');
 
-// Verifique se as funções são referenciadas corretamente:
-router.get('/', taskController.getAllTasks);                // Listar tarefas
-router.post('/', taskController.createTask);               // Criar nova tarefa
-router.get('/:id', taskController.getTaskById);            // Buscar tarefa por ID
-router.put('/:id', taskController.updateTask);             // Atualizar tarefa
-router.patch('/:id/done', taskController.markTaskAsDone);  // Marcar como concluída
-router.delete('/:id', taskController.deleteTask);          // Deletar tarefa
+
+router.post('/', authenticate, taskController.createTask);
+router.get('/', authenticate, taskController.getAllTasks);
+router.get('/:id', authenticate, taskController.getTaskById);
+router.put('/:id/done', authenticate, taskController.markTaskAsDone);
+router.put('/:id', authenticate, taskController.updateTask);
+router.delete('/:id', authenticate, taskController.deleteTask);
 
 module.exports = router;

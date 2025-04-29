@@ -64,20 +64,19 @@ exports.login = async (req, res) => {
 
 }
 
-exports.authenticate = (req,res,next) => {
+exports.authenticate = (req, res, next) => {
     const token = req.headers['authorization'];
 
-    if(!token){
-        return res.status(403).json({message: 'Token de autenticaçao ausente!'});
+    if(!token) {
+        return res.status(403).json({message:'Token ausente'});
     }
 
     try{
-        const decoded = jwt.verify(token, 'secrect_key');
-        req.userId = decoded.userId
+        const decoded = jwt.verify(token.split(' ')[1], 'secret key');
+        req.userId = decoded.userId;
         next();
-    } catch (error){
+    } catch (error) {
         console.error(error);
-        res.status(401).json({message: 'Token inválido'});
+        res.status(401).json({message:'Token inválido'})
     }
-
 }
