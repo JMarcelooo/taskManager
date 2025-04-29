@@ -1,34 +1,38 @@
 const Task = require('../models/Task');
 
+
 exports.createTask = async (req, res) => {
-    const {title, description} = req.body;
-    const userId = req.userId;
-
+    const { title, description } = req.body;
+    const userId = req.userId; // Obtém o userId do token JWT (passado pelo middleware authenticate)
+  
+    console.log("User ID recebido:", userId);  // Verifique se o userId foi corretamente adicionado
+  
     try {
-
-        const newTask = new Task({
-            title,
-            description,
-            userId,
-        })
-
-        await newTask.save();
-
-        res.status(201).json({
-            message: 'Tarefa criada com sucesso!',
-            task: newTask,
-        });
+      // Criação da tarefa associada ao userId
+      const newTask = new Task({
+        title,
+        description,
+        userId, // Passa o userId corretamente
+      });
+  
+      // Salva a tarefa no banco de dados
+      await newTask.save();
+  
+      res.status(201).json({
+        message: 'Tarefa criada com sucesso!',
+        task: newTask,
+      });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({message: 'Erro ao criar tarefa', error});
+      console.error("Erro ao criar tarefa:", error);
+      res.status(500).json({ message: 'Erro ao criar tarefa', error });
     }
-};
+  };
 
 exports.getAllTasks = async (req, res) => {
     const userId = req.userId;
 
     try {
-        const taks = await Task.find({userId});
+        const tasks = await Task.find({userId});
 
         res.status(200).json({tasks});
     } catch (error) {

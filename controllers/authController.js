@@ -49,7 +49,7 @@ exports.login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            {userid: user._id},
+            {userId: user._id},
             'secret_key',
             {expiresIn: '1h'}
         );
@@ -67,16 +67,22 @@ exports.login = async (req, res) => {
 exports.authenticate = (req, res, next) => {
     const token = req.headers['authorization'];
 
-    if(!token) {
-        return res.status(403).json({message:'Token ausente'});
+    console.log("Token recebido:", token);
+
+    if(!token){
+        return res.status(403).json({message: 'Token ausente'})
     }
 
-    try{
-        const decoded = jwt.verify(token.split(' ')[1], 'secret key');
+    try { 
+        const decoded = jwt.verify(token.split(' ')[1], 'secret_key');
+        console.log("Token decodificado", decoded);
+        console.log("UserId do Token:", decoded.userId);
+        console.log(decoded);
         req.userId = decoded.userId;
         next();
     } catch (error) {
-        console.error(error);
-        res.status(401).json({message:'Token inválido'})
+        console.error("erro:", error);
+        return res.status(401).json({message:'Token invalido'})
     }
+    
 }
