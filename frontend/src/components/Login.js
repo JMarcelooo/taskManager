@@ -26,7 +26,9 @@ const Login = () => {
             <h1>Login</h1>
             <input type="email" placeholder='Email' onChange={e => setEmail(e.target)}></input>
             <input type='password' placeholder='Senha' onChange={e => setPassword(e.target.value)}></input>
+            <a href="" className='forgot-password'>Esqueceu sua senha?</a>
             <button onClick={handleLogin}>Login</button>
+            <a href="" className='register-link'>Crie sua conta</a>
         </div>
     )
 }

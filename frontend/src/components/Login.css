@@ -1,42 +1,71 @@
 
 .login-container {
     width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
+    max-width: 500px;
     padding: 30px;
     background-color: #f4f4f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    align-content: center;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
   }
   
   .login-container h1 {
     text-align: center;
-    color: #333;
+    color: #BA808E;
   }
   
   .login-container input {
-    width: 100%;
+    width: 95%;
     padding: 10px;
-    margin-bottom: 10px;
     border-radius: 5px;
-    border: 1px solid #ddd;
+    margin: 0px 0px 10px 0px;
+    border: 1px solid #000000;
     font-size: 16px;
     text-align: center;
   }
   
   .login-container button {
-    width: 90%;
+    width: 85%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #58A4BC;
     border: none;
     border-radius: 5px;
     color: white;
     font-size: 16px;
     cursor: pointer;
   }
-  
+
   .login-container button:hover {
-    background-color: #0056b3;
+    background-color: #4e91a5;
   }
   
+  .register-link {
+    font-size: 20px;
+    color: #000000;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    transition: color 0.3s ease, font-size 0.3s ease;
+  }
+  
+  .register-link:hover {
+    color: #00152c;
+    font-size: 22px;
+  }
+  
+  .forgot-password {
+    display: flex;
+    justify-self: right;
+    font-size: 15px;
+    text-decoration: none;
+    color: black;
+    margin-top: -10px;
+    margin-bottom: 10px;
+
+  }
+
+  .forgot-password:hover{
+    text-decoration: underline;
+  }
